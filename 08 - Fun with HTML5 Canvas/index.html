@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.strokeStyle = '#f33914';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 10;
+  let red = 127;
+  let green = 127;
+  let blue = 127;
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+  });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function draw(e) {
+    if(!isDrawing) return;
+    ctx.lineWidth += Math.random() * 2 - 1.01;
+    red += Math.random() * 10 - 5;
+    green += Math.random() * 10 - 5;
+    blue += Math.random() * 10 - 5;
+    red <= 0 ? red = 0 : red >= 255 ? red = 255 : null;
+    green <= 0 ? green = 0 : green >= 255 ? green = 255 : null;
+    blue <= 0 ? blue = 0 : blue >= 255 ? blue = 255 : null;
+    if (ctx.lineWidth < 1) {ctx.lineWidth = 1};
+    ctx.strokeStyle = `rgb(${red}, ${green}, ${blue})`;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY)
+    ctx.stroke();
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+  }
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
